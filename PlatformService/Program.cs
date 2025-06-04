@@ -1,0 +1,62 @@
+using Microsoft.EntityFrameworkCore;
+using PlatformService.Data;
+using PlatformService.Endpoints;
+using PlatformService.SyncDataServices.Http;
+using System.Runtime.CompilerServices;
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddControllers();
+
+builder.Services.AddOpenApi();
+
+if (builder.Environment.IsProduction())
+{
+    Console.WriteLine("--> Using SQL Server Database");
+
+    builder.Services.AddDbContext<AppDbContext>(
+        opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("PlatformConnection")));
+}
+else
+{
+    Console.WriteLine("--> Using InMemory Database");
+
+    builder.Services.AddDbContext<AppDbContext>(
+        opt => opt.UseInMemoryDatabase("InMem"));
+}
+
+builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
+
+builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
+
+Console.WriteLine($"--> CommandService Endpoint {builder.Configuration["CommandService"]}");
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
+
+Console.WriteLine("--> Before Seeding Env: is Prod ?"+ app.Environment.IsProduction());
+
+// Database seeding
+PrepDb.PrepPopulation(app, isProd: app.Environment.IsProduction());
+
+//app.UseHttpsRedirection(); will cause issues with Docker, so we will not use it in this example
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.MapPlatformEndpoints();
+
+app.MapGet("/health", () =>  Results.Ok("Hey: Hello World from PlatformService "+DateTime.Now));
+    
+
+app.Run();

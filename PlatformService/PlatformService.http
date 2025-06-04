@@ -1,0 +1,21 @@
+@PlatformService_HostAddress = https://localhost:7170
+
+GET {{PlatformService_HostAddress}}/api/platforms
+Accept: application/json
+
+###
+
+GET {{PlatformService_HostAddress}}/api/platforms/2
+Accept: application/json
+
+###
+
+POST {{PlatformService_HostAddress}}/api/platforms
+Content-Type: application/json
+{
+    "name": "Test Platform",
+    "publisher": "Test Publisher",
+    "cost": "Free of charge"
+}
+
+###
