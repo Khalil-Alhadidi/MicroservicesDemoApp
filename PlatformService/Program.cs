@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PlatformService.AsyncDataServices;
 using PlatformService.Data;
 using PlatformService.Endpoints;
 using PlatformService.SyncDataServices.Http;
@@ -26,9 +27,24 @@ else
         opt => opt.UseInMemoryDatabase("InMem"));
 }
 
+
+
+
+
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 
 builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
+
+
+// For async version, you might want to initialize on startup
+////builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
+builder.Services.AddSingleton<IMessageBusClient>(provider =>
+{
+    var client = new MessageBusClient(provider.GetRequiredService<IConfiguration>());
+    // Initialize async in background or during app startup
+    return client;
+});
+
 
 Console.WriteLine($"--> CommandService Endpoint {builder.Configuration["CommandService"]}");
 

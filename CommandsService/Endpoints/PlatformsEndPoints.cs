@@ -16,15 +16,17 @@ public static class PlatformsEndPoints
         // get all platforms
         group.MapGet("/", (ICommandRepo _respository, IMapper mapper) =>
         {
+            Console.WriteLine($"--> Getting all platforms from CommandService... ");
+
             var platforms = _respository.GetAllPlatforms();
-            Console.WriteLine($"--> Getting all platforms: {platforms.Count()} found.");
+            
             return Results.Ok(mapper.Map<IEnumerable<PlatformReadDto>>(platforms));
         });
 
         group.MapPost("/", () =>
         {
-            Console.WriteLine("--> Inbound GET # Command Service");
-            return Results.Ok("--> Inbound GET # Command Service");
+            Console.WriteLine("--> Inbound POST # Command Service");
+            return Results.Ok("--> Inbound POST # Command Service");
         });
 
     }

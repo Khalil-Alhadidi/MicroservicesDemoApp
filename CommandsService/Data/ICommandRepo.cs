@@ -11,6 +11,7 @@ public interface ICommandRepo
     void CreatePlatform(Platform plat);
 
     bool PlatformExists(int platformId);
+    bool ExternalPlatformExists(int externalPlatformId);
 
 
     //commands
