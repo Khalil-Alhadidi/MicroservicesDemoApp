@@ -4,9 +4,12 @@ This code follows Les Jackson Course on Youtube but this one uses Minimal APIs a
 - C#
 - .NET 9
 - MinimalAPIs
-- RabbitMQ 7.1.2
-- Docker
+- Docker & Kubernetes
+- RabbitMQ (7.1.2)
 - EF Core (SQL Server & In Memeory DB)
+- Multi-Resource API
+- gRPC
+
 
 
 Youtube Course link : https://youtu.be/DgVjEo3OGBI?si=r2E3Qg0DyzkVjscx
