@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8s", "K8s", "{9C9C1249-6424-4242-84F4-EE4CAD5B3369}"
 	ProjectSection(SolutionItems) = preProject
 		commands-depl.yaml = commands-depl.yaml
+		..\..\..\Pictures\Screenpresso\Architecture_2025-06-14_15h25_59.png = ..\..\..\Pictures\Screenpresso\Architecture_2025-06-14_15h25_59.png
 		ingress-srv.yaml = ingress-srv.yaml
 		local-pvc.yaml = local-pvc.yaml
 		mssql-plat-depl.yaml = mssql-plat-depl.yaml

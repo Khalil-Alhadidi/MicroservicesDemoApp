@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PlatformService.AsyncDataServices;
 using PlatformService.Data;
 using PlatformService.Endpoints;
+using PlatformService.SyncDataServices.Grpc;
 using PlatformService.SyncDataServices.Http;
 using System.Runtime.CompilerServices;
 
@@ -46,6 +47,9 @@ builder.Services.AddSingleton<IMessageBusClient>(provider =>
 });
 
 
+builder.Services.AddGrpc();
+
+
 Console.WriteLine($"--> CommandService Endpoint {builder.Configuration["CommandService"]}");
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -72,7 +76,15 @@ app.MapControllers();
 
 app.MapPlatformEndpoints();
 
+app.MapGrpcService<GrpcPlatformService>();
+
+
 app.MapGet("/health", () =>  Results.Ok("Hey: Hello World from PlatformService "+DateTime.Now));
-    
+
+app.MapGet("/protos/platforms.proto", async context =>
+{
+    await context.Response.WriteAsync(File.ReadAllText("Protos/platforms.proto"));
+});
+
 
 app.Run();

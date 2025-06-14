@@ -2,6 +2,7 @@ using CommandsService.AsyncDataServices;
 using CommandsService.Data;
 using CommandsService.Endpoints;
 using CommandsService.EventProcessing;
+using CommandsService.SyncDataServices.Grpc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+builder.Services.AddScoped<IPlatformDataClient, PlatformDataClient>();
 
 builder.Services.AddScoped<ICommandRepo, CommandRepo>();
 builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
@@ -30,6 +34,8 @@ app.MapPlatformsEndpoints();
 app.MapCommandsEndpoints();
 
 app.MapGet("/health", () => Results.Ok("Hey: Hello World from CommandService " + DateTime.Now));
+
+PrepDb.PrepPopulation(app);
 
 app.UseExceptionHandler();
 app.UseStatusCodePages();
