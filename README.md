@@ -1,5 +1,5 @@
 # Microservices Application with C#
-This code follows Les Jackson Course on Youtube but this one uses Minimal APIs and .NET 9
+This code follows Les Jackson's Course on Youtube but this one uses Minimal APIs and .NET 9
 
 - C#
 - .NET 9
